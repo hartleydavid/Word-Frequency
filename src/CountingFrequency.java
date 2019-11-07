@@ -48,7 +48,10 @@ public class CountingFrequency {
 	}
 
 	private Map<String, Integer> sortFrequency(Map<String, Integer> myMap) {
-
+		/**
+		 * Code found and researched with StackOverflow and Oracle
+		 */
+		
 		Map<String, Integer> sorted = myMap.entrySet().stream().sorted(comparingByValue())
 				.collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
 		return sorted;
