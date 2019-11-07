@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.util.*;
 
@@ -12,7 +13,7 @@ public class WordFrequency {
 		WordFrequency wf = new WordFrequency();
 		Collection<String> collection;
 		wf.results = new String[4][3];
-		wf.wordSet = new String[11];
+		wf.wordSet = new String[10];
 		wf.addWords(wf.wordSet);
 		
 		filename = "Pride And Prejudice.txt";		
@@ -38,14 +39,13 @@ public class WordFrequency {
 		System.out.print("The time for a LinkedList is: ");
 		wf.empiricalAnalysis(collection,3);
 
-		System.out.print(Arrays.deepToString(wf.results));
 		wf.drawTable();
 	}
 
 	private void empiricalAnalysis(Collection<String> c, int setNum) throws FileNotFoundException {		
 		readFile(c,setNum);
-		askUser(c,setNum);
-		//testTime(c, setNum);
+		//askUser(c,setNum);
+		testTime(c, setNum);
 		
 	}
 	
@@ -61,7 +61,7 @@ public class WordFrequency {
 			
 			while(lineReader.hasNext()) {		
 				String word = lineReader.next();
-				cleanWord(word);
+				word = cleanWord(word);
 				c.add(word);
 			}
 			lineReader.close();
@@ -94,15 +94,31 @@ public class WordFrequency {
 	
 	
 	private String cleanWord(String word) {
+		word.replaceAll("[^a-z]", "");
 		word = word.toLowerCase();
-		word.replace("\\p{P}", "");
+		
 		return word;
 	}
 		
 	private void testTime(Collection<String> c,int setNum) {
+		double avgTime = 0;
+		double endTime = 0;
 		
+		for(int word = 0; word<wordSet.length; word++) {
+			double startTime = System.nanoTime();
+
+			if(c.contains(wordSet[word])) {
+				endTime = System.nanoTime();
+			}else {
+				endTime = System.nanoTime();
+			}
+			
+			avgTime += (endTime - startTime);
+		}
+		results[setNum][2] = "" + avgTime/wordSet.length;
 		
 	}
+	
 	private void addWords(String[] array) {
 		array[0] = "views";
 		array[1] = "bewitching";
@@ -114,23 +130,27 @@ public class WordFrequency {
 		array[7] = "frankly";
 		array[8] = "yelled";
 		array[9] = "hello";
-		array[10] = "questionable";
+
 	}
-	private String drawTable() {
-		System.out.println("\nSummary of Results");
-		for(int i= 0; i<37;i++) {
+	
+	
+	private void drawTable() {
+		System.out.println("\nSummary of Results : Time in microseconds");
+		drawLine(37);
+		System.out.println("|           | Load File |  Contains |");
+		drawLine(37);
+		for(int x = 0; x< 4; x++) {
+			System.out.printf("|%11s|%11s|%11s|\n",results[x][0],results[x][1],results[x][2]);
+		}
+	}
+	
+	public void drawLine(int count) {
+		for(int i= 0; i<count;i++) {
 			System.out.print("-");
 		}
-		System.out.println("\n|           | Load File |  Contains |");
+		System.out.println();
 		
-		for(int x = 0; x< 4; x++) {
-			
-		}
-		
-		return "";
 	}
 
 }
-
-
 
